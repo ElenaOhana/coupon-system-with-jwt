@@ -16,13 +16,13 @@ public class CouponControllerAdvice {
 
     @ExceptionHandler(value={CouponSystemException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)/* 400-business logic */
-    public ErrorDetails handleException(Exception e) {
+    public ErrorDetails handleException(CouponSystemException e) {
         return new ErrorDetails("From CouponSystem", e.getMessage());
     }
 
     @ExceptionHandler(value={SecurityException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)/* 401 - Unauthorized (authentication) */
-    public ErrorDetails handleException2(Exception e) {
+    public ErrorDetails handleException2(SecurityException e) {
         return new ErrorDetails("From Security", e.getMessage());
     }
 
@@ -39,7 +39,7 @@ public class CouponControllerAdvice {
     }
 
     @ExceptionHandler(value = {NoSuchElementException.class}) // orElseThrow()
-    public ResponseEntity<?> myNoIdError(IllegalArgumentException ex, WebRequest request){
+    public ResponseEntity<?> myNoIdError(NoSuchElementException ex, WebRequest request){
         return ResponseEntity.badRequest().body("Invalid id!");
     }
 }

@@ -26,13 +26,13 @@ public class CompanyController extends ClientController {
     @ValidToken
     public ResponseEntity<?> getAllCoupons(HttpServletRequest request) {
         String token = tokenManager.returnPureToken(request);
-        long id;
-        id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
-        if (companyService != null) {
+        long id = JWT.decode(token).getClaim("id").asLong();
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return new ResponseEntity<>(companyService.getAllCompanyCoupons(), HttpStatus.OK);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("coupon/{couponId}")
@@ -41,8 +41,8 @@ public class CompanyController extends ClientController {
         String token = tokenManager.returnPureToken(request);
         long id;
         id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return ResponseEntity.ok(companyService.getCouponByIdOfConnectedCompany(couponId));
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -54,8 +54,8 @@ public class CompanyController extends ClientController {
     public ResponseEntity<?> addCoupon(HttpServletRequest request, @RequestBody Coupon coupon) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return ResponseEntity.ok(companyService.addCoupon(coupon));
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -67,8 +67,8 @@ public class CompanyController extends ClientController {
     public ResponseEntity<?> updateCoupon(HttpServletRequest request, @PathVariable long couponId, @RequestBody Coupon coupon) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return ResponseEntity.ok(companyService.updateCoupon(couponId, coupon));
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -77,11 +77,11 @@ public class CompanyController extends ClientController {
 
     @DeleteMapping("coupon/{couponId}")
     @ValidToken
-    public ResponseEntity<?> deleteCouponById(HttpServletRequest request, @PathVariable long couponId) throws SecurityException {
+    public ResponseEntity<?> deleteCouponById(HttpServletRequest request, @PathVariable long couponId) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return ResponseEntity.ok(companyService.removeCoupon(couponId));
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -90,26 +90,28 @@ public class CompanyController extends ClientController {
 
     @GetMapping("details")
     @ValidToken
-    public ResponseEntity<?> getCompanyDetails(HttpServletRequest request) throws SecurityException {
+    public ResponseEntity<?> getCompanyDetails(HttpServletRequest request) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
-        if (companyService != null) {
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return new ResponseEntity<>(companyService.getCompanyDetails(), HttpStatus.OK);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("category")
     @ValidToken
-    public ResponseEntity<?> getCompanyCouponsByCategory(HttpServletRequest request, @RequestBody Category category) throws SecurityException {
+    public ResponseEntity<?> getCompanyCouponsByCategory(HttpServletRequest request, @RequestBody Category category) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
-        if (companyService != null) {
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return new ResponseEntity<>(companyService.getCompanyCouponsByCategory(category), HttpStatus.OK);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("category-and-couponStatus/{couponStatus}") // @PathVariable
@@ -117,21 +119,22 @@ public class CompanyController extends ClientController {
     public ResponseEntity<?> getCompanyCouponsByCategoryAndStatus(HttpServletRequest request, @RequestBody Category category, @PathVariable CouponStatus couponStatus) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
-        if (companyService != null) {
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return new ResponseEntity<>(companyService.getCompanyCouponsByCategoryAndStatus(category, couponStatus), HttpStatus.OK);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 
     @GetMapping("max_price")
     @ValidToken
-    public ResponseEntity<?> getMaxPriceOfCouponsOfCompany(HttpServletRequest request) throws SecurityException {
+    public ResponseEntity<?> getMaxPriceOfCouponsOfCompany(HttpServletRequest request) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return ResponseEntity.ok(companyService.getMaxPriceOfCouponsOfCompany());
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -140,11 +143,11 @@ public class CompanyController extends ClientController {
 
     @GetMapping("coupons_less_than_max_price")
     @ValidToken
-    public ResponseEntity<?> getCouponListLessThanMaxPrice(HttpServletRequest request) throws SecurityException {
+    public ResponseEntity<?> getCouponListLessThanMaxPrice(HttpServletRequest request) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
-        CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
         try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
             return new ResponseEntity<>(companyService.findFromCompanyCouponsUpToMaxPrice(), HttpStatus.OK);
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -75,18 +75,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         } else
             throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION);
     }
-    /*public Coupon addCoupon(@NotNull(message = "The Coupon must not be null") Coupon coupon) throws CouponSystemException{
-        if (coupon.getCompany().getId().equals(companyId)) {
-            if (couponRepository.existsByTitleAndCompanyId(coupon.getTitle(), companyId)) {
-                throw new CouponSystemException(ErrMsg.TITLE_EXISTS);
-            } else {
-                return couponRepository.save(coupon);
-            }
-        } else { // because of those brackets it didn't work - didn't throw ILLEGAL_ACTION exception!!
-            throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION);
-        } // because of those brackets it didn't work - didn't throw ILLEGAL_ACTION exception!!
-    }*/
-
 
     @Override
     public Integer updateCoupon(@NotNull(message = "The couponId must not be null") Long couponId,

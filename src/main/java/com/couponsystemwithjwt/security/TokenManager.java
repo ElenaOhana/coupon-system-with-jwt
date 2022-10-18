@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.couponsystemwithjwt.entity_beans.Administrator;
 import com.couponsystemwithjwt.entity_beans.Company;
 import com.couponsystemwithjwt.entity_beans.Customer;
+import com.couponsystemwithjwt.exceptions.CouponSystemException;
+import com.couponsystemwithjwt.exceptions.ErrMsg;
 import com.couponsystemwithjwt.services.ClientService;
 import com.couponsystemwithjwt.state.MySession;
 import com.couponsystemwithjwt.types.ClientType;
@@ -80,7 +82,7 @@ public class TokenManager {
         //sessions.entrySet().removeIf(info -> info.getValue().getLastActiveLDT().isAfter(LocalDateTime.now().minusMinutes(30)));
     }
 
-    public ClientService getClientFromSessionByTokenIdAndSetLastActive(long id) {
+    public ClientService getClientFromSessionByTokenIdAndSetLastActive(long id) throws CouponSystemException {
         MySession session = sessions.get(id);
         ClientService clientServiceFromSession;
         if (session != null) {
@@ -89,6 +91,6 @@ public class TokenManager {
             sessions.put(id, session);
             return clientServiceFromSession;
         }
-        return null;
+        throw new CouponSystemException(ErrMsg.SESSION_NOT_FOUND);
     }
 }

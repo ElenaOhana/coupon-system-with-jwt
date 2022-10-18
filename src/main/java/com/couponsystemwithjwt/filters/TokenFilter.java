@@ -22,7 +22,7 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();// return all string of URL right after the PORT!!=> must be a context path also.
-        return path.startsWith("/my-coupon-app/auth") || path.endsWith("/coupons-for-all") || path.endsWith("/able-coupons-for-all");
+        return path.startsWith("/my-coupon-app/auth") || path.endsWith("/coupons-for-all") || path.endsWith("/able-coupons-for-all") || path.contains("/coupon/");
     }
 
     @Override

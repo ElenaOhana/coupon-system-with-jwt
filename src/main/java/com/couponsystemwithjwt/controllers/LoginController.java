@@ -28,7 +28,12 @@ public class LoginController extends ClientController {
 
     @PostMapping(path = "/login/{type}")
     protected ResponseEntity<?> login(@RequestBody Credentials credentials, @PathVariable ClientType type) throws CouponSystemException {
-        ClientService clientService = loginManager.login(credentials.getEmail(), credentials.getPassword(), type);
+        ClientService clientService = null;
+        try {
+            clientService = loginManager.login(credentials.getEmail(), credentials.getPassword(), type);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
         long id = 0;
         String token = null;
         try {

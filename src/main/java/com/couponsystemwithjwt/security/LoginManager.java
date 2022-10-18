@@ -37,14 +37,14 @@ public class LoginManager {
                 break;
             case COMPANY:
                 CompanyServiceImpl companyService = context.getBean(CompanyServiceImpl.class); // companyService with companyId=null
-                if (companyService.login(email, password)) {
+                if (companyService.login(email, password)) { // my way to check credentials.
                      companyService.loginCompanyReturnId(email, password); // companyService with companyId=1
                     return companyService;
                 }
                 break;
             case CUSTOMER:
                 CustomerServiceImpl customerService = context.getBean(CustomerServiceImpl.class);
-                if (customerService.loginCustomerReturnId(email, password) > 0) {
+                if (customerService.loginCustomerReturnId(email, password) > 0) { // second way to check credentials.
                     return customerService;
                 }
                 break;

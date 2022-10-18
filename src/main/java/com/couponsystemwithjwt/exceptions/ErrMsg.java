@@ -32,7 +32,8 @@ public enum ErrMsg {
     INVALID_EMAIL_OR_PASSWORD("Invalid email or password"),
     COUPON_STATUS_DISABLE("The coupon has status DISABLE, what means coupon does not exist"),
     COUPON_DOES_NOT_EXIST("The coupon does not exist"),
-    CLIENT_DOES_NOT_EXISTS("Client does not exists");
+    CLIENT_DOES_NOT_EXISTS("Client does not exists"),
+    SESSION_NOT_FOUND("Session does not exist");
 
     private String errDescription;
 

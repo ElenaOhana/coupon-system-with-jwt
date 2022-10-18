@@ -25,7 +25,6 @@ import java.util.List;
 @Validated
 @Data
 @Scope("prototype")
-
 public class CustomerServiceImpl extends ClientService implements CustomerService {
 
     private Long customerId;
