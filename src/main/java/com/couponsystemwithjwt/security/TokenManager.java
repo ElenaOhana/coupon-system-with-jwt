@@ -37,7 +37,7 @@ public class TokenManager {
                 .withIssuedAt(new Date())
                 .withClaim("id", admin.getId())
                 .withClaim("email", admin.getEmail())
-                .withClaim("ADMINISTRATOR", String.valueOf(ClientType.ADMINISTRATOR))
+                .withClaim("clientStatus", String.valueOf(ClientType.ADMINISTRATOR))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }
@@ -49,7 +49,7 @@ public class TokenManager {
                 .withClaim("id", company.getId())
                 .withClaim("name", company.getName())
                 .withClaim("email", company.getEmail())
-                .withClaim("COMPANY", String.valueOf(ClientType.COMPANY))
+                .withClaim("clientStatus", String.valueOf(ClientType.COMPANY))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }
@@ -62,7 +62,7 @@ public class TokenManager {
                 .withClaim("firstName", customer.getFirstName())
                 .withClaim("lastName", customer.getLastName())
                 .withClaim("email", customer.getEmail())
-                .withClaim("CUSTOMER", String.valueOf(ClientType.CUSTOMER))
+                .withClaim("clientStatus", String.valueOf(ClientType.CUSTOMER))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }

@@ -192,7 +192,7 @@ public class CompanyServiceTest implements CommandLineRunner {
         TestUtils.printTest("update coupon amount and title(to non-existing title) will succeed because updating to non-existing title");
         newDataToCoupon.setId(1L);
         newDataToCoupon.setCompany(adminService.getOneCompany(1L));
-        newDataToCoupon.setTitle("Cola updated title bottles-glass");
+        newDataToCoupon.setTitle("New title Cola bottles-glass");
         newDataToCoupon.setAmount(50);
         newDataToCoupon.setDescription("all drinks");
         try {
