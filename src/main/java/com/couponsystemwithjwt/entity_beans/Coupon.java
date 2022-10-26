@@ -57,6 +57,8 @@ public class Coupon {
     @NotNull
     private double price;
 
+    //@Lob // LONGTEXT
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     /**

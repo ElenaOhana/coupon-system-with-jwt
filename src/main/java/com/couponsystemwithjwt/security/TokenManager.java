@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -37,7 +38,7 @@ public class TokenManager {
                 .withIssuedAt(new Date())
                 .withClaim("id", admin.getId())
                 .withClaim("email", admin.getEmail())
-                .withClaim("clientStatus", String.valueOf(ClientType.ADMINISTRATOR))
+                .withClaim("clientType", String.valueOf(ClientType.ADMINISTRATOR))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }
@@ -49,7 +50,7 @@ public class TokenManager {
                 .withClaim("id", company.getId())
                 .withClaim("name", company.getName())
                 .withClaim("email", company.getEmail())
-                .withClaim("clientStatus", String.valueOf(ClientType.COMPANY))
+                .withClaim("clientType", String.valueOf(ClientType.COMPANY))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }
@@ -62,7 +63,7 @@ public class TokenManager {
                 .withClaim("firstName", customer.getFirstName())
                 .withClaim("lastName", customer.getLastName())
                 .withClaim("email", customer.getEmail())
-                .withClaim("clientStatus", String.valueOf(ClientType.CUSTOMER))
+                .withClaim("clientType", String.valueOf(ClientType.CUSTOMER))
                 .sign(Algorithm.HMAC256("topsecretkey"));
         return token;
     }

@@ -49,9 +49,10 @@ public class CompanyController extends ClientController {
         }
     }
 
-    @PostMapping("coupon")
+    @PostMapping("/coupon/")
     @ValidToken
     public ResponseEntity<?> addCoupon(HttpServletRequest request, @RequestBody Coupon coupon) {
+        System.out.println("add coupon");
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
         try {

@@ -288,7 +288,7 @@ public class AdminServiceTest implements CommandLineRunner {
         TestUtils.printTest("update customer will fail due to not allowed to change the customer id");
         Customer newDataToCustomer = Customer.builder()
                 .id(5L)
-                .email("anna_an44Gmail.com")
+                .email("anna_an44@Gmail.com")
                 .firstName("Anna")
                 .lastName("Gershkovich")
                 .password("4444")

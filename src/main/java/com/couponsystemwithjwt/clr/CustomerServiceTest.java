@@ -53,7 +53,7 @@ public class CustomerServiceTest implements CommandLineRunner {
         }
         CustomerServiceImpl customerServiceImpl = null;
         TestUtils.printTest("good logging");
-        System.out.println(customerServiceImpl = (CustomerServiceImpl) loginManager.login("anna_an44Gmail.com", "5555", ClientType.CUSTOMER));
+        System.out.println(customerServiceImpl = (CustomerServiceImpl) loginManager.login("anna_an44@Gmail.com", "5555", ClientType.CUSTOMER));
 
         CustomerPurchase customerPurchaseAsDummyData2 = CustomerPurchase.builder()
                 .customer(customerRepository.getCustomerById(2L))

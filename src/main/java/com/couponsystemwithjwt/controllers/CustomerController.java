@@ -111,8 +111,9 @@ public class CustomerController extends ClientController {
     }
 
     //For view the details of coupon on Home page
-    @GetMapping("coupon/{couponId}")
+    @GetMapping("couponForAllUsers/{couponId}")
     public ResponseEntity<?> getOneCoupon(HttpServletRequest request, @PathVariable long couponId) {
         return new ResponseEntity<>(couponRepository.getCouponById(couponId), HttpStatus.OK);
     }
 }
+
