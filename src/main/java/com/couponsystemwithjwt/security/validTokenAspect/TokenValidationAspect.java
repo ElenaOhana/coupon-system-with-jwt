@@ -44,7 +44,11 @@ public class TokenValidationAspect {
         }
         System.out.println("finished proxy");
         if (valid) {
-            return originalMethod.proceed();
+            try {
+                return originalMethod.proceed();
+            } catch (RuntimeException e) {
+                return ResponseEntity.status(401).body("Don't know you!");
+            }
         } else {
             return ResponseEntity.status(401).body("Don't know you!");
         }

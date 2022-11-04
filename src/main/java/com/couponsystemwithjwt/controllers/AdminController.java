@@ -8,9 +8,11 @@ import com.couponsystemwithjwt.security.validTokenAspect.ValidToken;
 import com.couponsystemwithjwt.services.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
+@Transactional
 @RestController
 @RequestMapping("admin")
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
@@ -73,7 +75,7 @@ public class AdminController extends ClientController {
     }
 
     @DeleteMapping("company/{companyId}")
-    @ValidToken
+    //@ValidToken
     public ResponseEntity<?> deleteCompany(HttpServletRequest request, @PathVariable long companyId) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();

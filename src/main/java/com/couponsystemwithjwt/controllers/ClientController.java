@@ -1,5 +1,6 @@
 package com.couponsystemwithjwt.controllers;
 
+import com.couponsystemwithjwt.repositories.CategoryRepository;
 import com.couponsystemwithjwt.security.LoginManager;
 import com.couponsystemwithjwt.security.TokenManager;
 import com.couponsystemwithjwt.services.*;
@@ -17,5 +18,9 @@ public abstract class ClientController {
     protected LoginManager loginManager;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
     protected HashMap<Long, MySession> sessions;
+
 }

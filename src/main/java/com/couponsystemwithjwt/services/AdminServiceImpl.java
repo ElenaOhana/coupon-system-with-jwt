@@ -5,12 +5,17 @@ import com.couponsystemwithjwt.entity_beans.Coupon;
 import com.couponsystemwithjwt.entity_beans.Customer;
 import com.couponsystemwithjwt.exceptions.CouponSystemException;
 import com.couponsystemwithjwt.exceptions.ErrMsg;
+import com.couponsystemwithjwt.repositories.CustomerPurchaseRepository;
 import com.couponsystemwithjwt.types.ClientStatus;
 import com.couponsystemwithjwt.types.CouponStatus;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -133,10 +138,16 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             company.getCoupons().forEach(status -> status.setCouponStatus(CouponStatus.DISABLE));
             //changes status to INACTIVE of the company (clientStatus=INACTIVE)
             company.setClientStatus(ClientStatus.INACTIVE);
-            //deletes customer purchase of the company from customers_purchases table
-            /*List<Coupon> couponList = */
-            couponRepository.findCompanyCouponsByCompanyId(id).forEach(c -> customerPurchaseRepository.deleteById(c.getId()));
-            //couponList.forEach(c -> customerPurchaseRepository.deleteById(c.getId()));
+            //deletes customerPurchases of the company from customers_purchases table
+            try {
+                couponRepository.findCompanyCouponsByCompanyId(id).forEach(c -> customerPurchaseRepository.deleteByCouponId(c.getId()));
+                /*List<Coupon> companyCouponsByCompanyId = couponRepository.findCompanyCouponsByCompanyId(id);
+                for (Coupon coupon : companyCouponsByCompanyId) {
+                    customerPurchaseRepository.deleteByCouponId(coupon.getId());
+                }*/
+            } catch (EmptyResultDataAccessException e) {
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
             return 1;
         } else {
             throw new CouponSystemException(ErrMsg.ID_NOT_FOUND);
@@ -176,7 +187,11 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             if (!customerFromDb.getId().equals(customer.getId())) {
                 throw new CouponSystemException(ErrMsg.UPDATE_CUSTOMER_ID);
             }
-            //For real life I would check if there are the changes for: FirstName and LastName and email TOGETHER - than I would conclude that this is a NEW CUSTOMER so, I would delete the old CustomerPurchases for overrided customer.
+            // additional check as a result from Project requirements: email of Customer is unique!
+            if (!customerFromDb.getEmail().equals(customer.getEmail()) && (customerRepository.existsByEmail(customer.getEmail()))) {
+                throw new CouponSystemException(ErrMsg.CUSTOMER_MAIL_EXISTS);
+            }
+            //For real life I would check if there are the changes for: FirstName and LastName and email TOGETHER - than I would conclude that this is a NEW CUSTOMER so, I would delete the old CustomerPurchases for overridden customer.
             return customerRepository.updateCustomer(customer.getEmail(), customer.getFirstName(), customer.getLastName(), customer.getPassword(), customer.getId());
         }
         throw new CouponSystemException(ErrMsg.ID_NOT_FOUND);

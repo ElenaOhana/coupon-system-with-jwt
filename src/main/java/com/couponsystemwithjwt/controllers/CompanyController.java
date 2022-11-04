@@ -22,6 +22,20 @@ public class CompanyController extends ClientController {
         super();
     }
 
+    @GetMapping("category/{categoryName}")
+    @ValidToken
+    public ResponseEntity<?> getCategory(HttpServletRequest request, @PathVariable String categoryName) {
+        String token = tokenManager.returnPureToken(request);
+        long id;
+        id = JWT.decode(token).getClaim("id").asLong();
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
+            return ResponseEntity.ok(categoryRepository.findByName(categoryName));
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("coupon")
     @ValidToken
     public ResponseEntity<?> getAllCoupons(HttpServletRequest request) {
@@ -49,10 +63,9 @@ public class CompanyController extends ClientController {
         }
     }
 
-    @PostMapping("/coupon/")
-    @ValidToken
+    @PostMapping("/coupon")
+    //@ValidToken
     public ResponseEntity<?> addCoupon(HttpServletRequest request, @RequestBody Coupon coupon) {
-        System.out.println("add coupon");
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
         try {
