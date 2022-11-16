@@ -29,7 +29,7 @@ public class CustomerPurchase {
 
     @ManyToOne /*( cascade = CascadeType.PERSIST )*/  //TODO  doesn't work CLR with CascadeType.PERSIST
     @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Coupon coupon;
 
     //@JsonIgnore

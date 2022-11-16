@@ -40,4 +40,6 @@ public interface CompanyService {
     Company getCompanyByEmailAndPassword(String email, String password) throws CouponSystemException;
     Coupon getMostExpensiveCoupon() throws CouponSystemException;
     Coupon getLeastExpensiveCoupon() throws CouponSystemException;
+
+    List<Coupon> getCompanyCouponsByCategoryId(Long categoryId);
 }

@@ -102,8 +102,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
                     customerPurchaseRepository.save(newCustomerPurchase);
                     return newCustomerPurchase;
                 }
-            }
-            throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION);
+            }throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION);
         }throw new CouponSystemException(ErrMsg.ID_NOT_FOUND);
     }
 

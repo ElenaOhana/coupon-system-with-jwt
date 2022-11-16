@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.NoSuchElementException;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class CouponControllerAdvice {
 /* @AfterThrowing advice/aspect (by default acts after Controller) */
 

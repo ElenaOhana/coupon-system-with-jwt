@@ -22,7 +22,7 @@ public class CompanyController extends ClientController {
         super();
     }
 
-    @GetMapping("category/{categoryName}")
+ /*   @GetMapping("category/{categoryName}")
     @ValidToken
     public ResponseEntity<?> getCategory(HttpServletRequest request, @PathVariable String categoryName) {
         String token = tokenManager.returnPureToken(request);
@@ -30,11 +30,13 @@ public class CompanyController extends ClientController {
         id = JWT.decode(token).getClaim("id").asLong();
         try {
             CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
+            Category category =categoryRepository.findByName(categoryName);
+            System.out.println(category);
             return ResponseEntity.ok(categoryRepository.findByName(categoryName));
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-    }
+    }*/
 
     @GetMapping("coupon")
     @ValidToken
@@ -128,7 +130,20 @@ public class CompanyController extends ClientController {
         }
     }
 
-    @GetMapping("category-and-couponStatus/{couponStatus}") // @PathVariable
+    @GetMapping("category/{categoryId}")
+    @ValidToken
+    public ResponseEntity<?> getCompanyCouponsByCategoryId(HttpServletRequest request, @PathVariable Long categoryId) {
+        String token = tokenManager.returnPureToken(request);
+        long id = JWT.decode(token).getClaim("id").asLong();
+        try {
+            CompanyService companyService = (CompanyService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
+            return new ResponseEntity<>(companyService.getCompanyCouponsByCategoryId(categoryId), HttpStatus.OK);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("category-and-couponStatus/{couponStatus}")
     @ValidToken
     public ResponseEntity<?> getCompanyCouponsByCategoryAndStatus(HttpServletRequest request, @RequestBody Category category, @PathVariable CouponStatus couponStatus) {
         String token = tokenManager.returnPureToken(request);

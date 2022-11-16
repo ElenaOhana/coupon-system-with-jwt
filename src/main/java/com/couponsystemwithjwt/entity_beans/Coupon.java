@@ -33,7 +33,7 @@ public class Coupon {
     @ManyToOne
     @NotNull
     //@ToString.Exclude // By default, all non-static fields will be printed. If you want to skip some fields, you can annotate these fields with @ToString.Exclude
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // enable as JsonProperty only to POST and PUT requests
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // enable as JsonProperty only to POST and PUT requests
     private Category category;
 
     /**

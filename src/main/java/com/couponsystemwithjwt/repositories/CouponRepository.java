@@ -74,4 +74,6 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     List<Coupon> findByCategory(@NotNull Category category);
 
     List<Coupon> findAllByCouponStatus(CouponStatus couponStatus);
+
+    List<Coupon> findByCategoryIdAndCompanyId(Long categoryId, Long companyId);
 }

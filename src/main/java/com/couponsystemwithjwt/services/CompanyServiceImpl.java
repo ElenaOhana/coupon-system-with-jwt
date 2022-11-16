@@ -166,6 +166,11 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     }
 
     @Override
+    public List<Coupon> getCompanyCouponsByCategoryId(Long categoryId) {
+        return couponRepository.findByCategoryIdAndCompanyId(categoryId,companyId);
+    }
+
+    @Override
     public List<Coupon> getCompanyCouponsByCategoryAndStatus(Category category, CouponStatus couponStatus) {
         return couponRepository.findByCategoryAndCompanyIdAndCouponStatus(category, companyId, couponStatus);
     }
@@ -189,6 +194,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         Coupon cheapCoupon = coupons.stream().sorted((c1, c2) -> (int) (c1.getPrice() - c2.getPrice())).findFirst().orElseThrow(() -> new CouponSystemException(ErrMsg.COUPON_DOES_NOT_EXIST));
         return cheapCoupon;
     }
+
 
     @Override
     public List<Coupon> findFromCompanyCouponsUpToMaxPrice() throws CouponSystemException {
