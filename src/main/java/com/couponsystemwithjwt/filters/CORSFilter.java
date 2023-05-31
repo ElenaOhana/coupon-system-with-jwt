@@ -26,6 +26,7 @@ public class CORSFilter implements Filter {
 
         // Authorize (allow) all domains to consume the content
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin","http://localhost:3000");/* I get requests from PORT 3000(React). From Angular - 4200 */
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin","https://letscouponit-production.up.railway.app");/* I get requests from my deployed app)) */
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE, PATCH");
         ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers","authorization, Origin, Accept, x-auth-token, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
