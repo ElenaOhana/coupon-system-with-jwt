@@ -15,8 +15,8 @@ public interface CustomerService {
 
     List<CustomerPurchase> getCustomerPurchases();
     List<Coupon> getCustomerPurchasesOfConnectedCustomerByCategoryId(Long categoryId);
-    double findMaxPriceOfCustomer();
-    List<Coupon> getCouponListLessThanMaxPrice();
+    Double findMaxPriceOfCustomer() throws CouponSystemException;
+    List<Coupon> getCouponListLessThanMaxPrice() throws CouponSystemException;
 
     Customer getCustomerDetails();
 
@@ -27,5 +27,6 @@ public interface CustomerService {
     Long getCustomerId();
 
     Customer findById(long id) throws CouponSystemException;
+    Customer addCustomer(String name, String surname, String email, String password) throws CouponSystemException;
 }
 

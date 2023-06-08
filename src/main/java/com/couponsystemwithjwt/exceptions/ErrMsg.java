@@ -33,7 +33,8 @@ public enum ErrMsg {
     COUPON_STATUS_DISABLE("The coupon has status DISABLE, what means coupon does not exist"),
     COUPON_DOES_NOT_EXIST("The coupon does not exist"),
     CLIENT_DOES_NOT_EXISTS("Client does not exists"),
-    SESSION_NOT_FOUND("Session does not exist");
+    SESSION_NOT_FOUND("Session does not exist"),
+    MAX_PRICE_NOT_FOUND("The max price of coupon not found");
 
     private String errDescription;
 

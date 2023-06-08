@@ -176,9 +176,9 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     }
 
     @Override
-    public double getMaxPriceOfCouponsOfCompany() throws CouponSystemException {
+    public Double getMaxPriceOfCouponsOfCompany() throws CouponSystemException {
         Company company = companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_FOUND));
-        return couponRepository.findMaxPrice(company);
+        return couponRepository.findMaxPrice(company).orElseThrow(()-> new CouponSystemException(ErrMsg.MAX_PRICE_NOT_FOUND));
     }
 
     @Override
@@ -245,5 +245,24 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
             throw new CouponSystemException(ErrMsg.INVALID_EMAIL_OR_PASSWORD);
         }
         return companyRepository.getCompanyByEmailAndPassword(email, password);
+    }
+
+    /**
+     * This is the method for register signup: receives the company params and checks by company email and name if the company exists in Database,
+     * if company doesn't exist - the method adds the company, and initializes the companyId
+     * otherwise throws CouponSystemException.
+     */
+    @Override
+    public Company addCompany(String name, String email, String password) throws CouponSystemException {
+        if (companyRepository.existsByName(name)) {
+            throw new CouponSystemException(ErrMsg.COMPANY_NAME_EXISTS);
+        }
+        if (companyRepository.existsByEmail(email)) {
+            throw new CouponSystemException(ErrMsg.COMPANY_EMAIL_EXISTS);
+        }
+        Company company = new Company(name, email, password);
+        Company companyFromDb = companyRepository.save(company);
+        this.companyId = companyFromDb.getId();
+        return companyFromDb;
     }
 }

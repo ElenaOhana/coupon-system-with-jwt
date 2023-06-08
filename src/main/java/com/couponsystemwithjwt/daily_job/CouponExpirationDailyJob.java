@@ -50,4 +50,4 @@ public class CouponExpirationDailyJob {
 
 //In case I want to delete(for real) expired coupons, I will need:
 //1. customerPurchase table will demand to be treated first:  cascade on-delete can be helpful(in coupons table).
-//2. treated the coupons table.
+//2. treat the coupons table.

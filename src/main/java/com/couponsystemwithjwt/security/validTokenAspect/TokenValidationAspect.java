@@ -1,19 +1,14 @@
 package com.couponsystemwithjwt.security.validTokenAspect;
 
 import com.auth0.jwt.JWT;
-import com.couponsystemwithjwt.services.ClientService;
 import com.couponsystemwithjwt.state.MySession;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @Component
@@ -27,7 +22,6 @@ public class TokenValidationAspect {
     public Object validate(ProceedingJoinPoint originalMethod) throws Throwable {
 
         System.out.println("running the proxy!");
-
         Object[] params = originalMethod.getArgs();
         boolean valid = false;
         for (Object param : params) {
@@ -37,6 +31,7 @@ public class TokenValidationAspect {
                     token = ((HttpServletRequest) param).getHeader("authorization").split(" ")[1]; // When the Token with Bearer.
                 }
                 Long id = JWT.decode(token).getClaim("id").asLong();
+                System.out.println("id: " + id);
                 if (id != null && id > 0) {
                     valid = true;
                 }
@@ -44,10 +39,11 @@ public class TokenValidationAspect {
         }
         System.out.println("finished proxy");
         if (valid) {
+
             try {
                 return originalMethod.proceed();
             } catch (RuntimeException e) {
-                return ResponseEntity.status(401).body("Don't know you!");
+                return ResponseEntity.status(401).body("OriginalMethod fail to proceed!");
             }
         } else {
             return ResponseEntity.status(401).body("Don't know you!");

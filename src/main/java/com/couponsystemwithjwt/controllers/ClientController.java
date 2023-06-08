@@ -1,9 +1,8 @@
 package com.couponsystemwithjwt.controllers;
 
 import com.couponsystemwithjwt.repositories.CategoryRepository;
-import com.couponsystemwithjwt.security.LoginManager;
+import com.couponsystemwithjwt.security.AuthManager;
 import com.couponsystemwithjwt.security.TokenManager;
-import com.couponsystemwithjwt.services.*;
 import com.couponsystemwithjwt.state.MySession;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +14,7 @@ public abstract class ClientController {
     protected TokenManager tokenManager;
 
     @Autowired
-    protected LoginManager loginManager;
+    protected AuthManager authManager;
 
     @Autowired
     CategoryRepository categoryRepository;

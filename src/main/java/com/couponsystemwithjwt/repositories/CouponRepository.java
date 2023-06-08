@@ -51,7 +51,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     List<Coupon> findByCategoryAndCompanyIdAndCouponStatus(Category category, Long companyId, CouponStatus couponStatus);
 
     @Query(value = "SELECT max(price) FROM Coupon c WHERE c.company = ?1")
-    double findMaxPrice(Company company);
+    Optional<Double> findMaxPrice(Company company);
 
     @Query(value = "SELECT * FROM coupons c WHERE c.price < ?1 AND c.company_id = ?2", nativeQuery = true)
     List<Coupon> findFromCouponsOfTheCompany(double maxPrice, Long companyId);
@@ -64,7 +64,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     List<Coupon> findByCustomerIdAndCategoryId(Long customerId, Long categoryId);
 
     @Query(value = "SELECT max(price) FROM coupons as c join customer_purchases as cvc on cvc.customer_id = ?1 WHERE cvc.coupon_id = c.id", nativeQuery = true)
-    double findMaxPrice(Long customerId);
+    Optional<Double> findMaxPrice(Long customerId);
 
     List<Coupon> findAllByEndDateBefore(LocalDateTime localDateTime);
     boolean existsByTitle(String title);

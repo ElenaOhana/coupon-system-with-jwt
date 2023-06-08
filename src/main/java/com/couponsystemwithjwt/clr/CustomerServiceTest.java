@@ -5,7 +5,7 @@ import com.couponsystemwithjwt.entity_beans.Coupon;
 import com.couponsystemwithjwt.entity_beans.CustomerPurchase;
 import com.couponsystemwithjwt.exceptions.CouponSystemException;
 import com.couponsystemwithjwt.repositories.*;
-import com.couponsystemwithjwt.security.LoginManager;
+import com.couponsystemwithjwt.security.AuthManager;
 import com.couponsystemwithjwt.services.CustomerServiceImpl;
 import com.couponsystemwithjwt.types.ClientType;
 import com.couponsystemwithjwt.types.CouponStatus;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CustomerServiceTest implements CommandLineRunner {
 
     @Autowired
-    private LoginManager loginManager;
+    private AuthManager authManager;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -47,13 +47,13 @@ public class CustomerServiceTest implements CommandLineRunner {
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + ArtUtils.CUSTOMER_SERVICE_TEST);
         TestUtils.printTest("bad logging");
         try {
-            System.out.println(loginManager.login("some_bad_mail@gmail.com", "1234", ClientType.CUSTOMER));
+            System.out.println(authManager.login("some_bad_mail@gmail.com", "1234", ClientType.CUSTOMER));
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
         CustomerServiceImpl customerServiceImpl = null;
         TestUtils.printTest("good logging");
-        System.out.println(customerServiceImpl = (CustomerServiceImpl) loginManager.login("anna_an44@Gmail.com", "5555", ClientType.CUSTOMER));
+        System.out.println(customerServiceImpl = (CustomerServiceImpl) authManager.login("anna_an44@Gmail.com", "5555", ClientType.CUSTOMER));
 
         CustomerPurchase customerPurchaseAsDummyData2 = CustomerPurchase.builder()
                 .customer(customerRepository.getCustomerById(2L))
@@ -91,7 +91,7 @@ public class CustomerServiceTest implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(7))
                 .amount(0)
                 .price(3800)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/36/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
         couponRepository.save(couponAsDummyDataCoupon);

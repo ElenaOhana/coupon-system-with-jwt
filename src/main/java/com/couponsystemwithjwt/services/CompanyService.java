@@ -26,7 +26,7 @@ public interface CompanyService {
     Coupon getCouponByIdAndTitle(Long id, String title) throws CouponSystemException;
     List<Coupon> getCompanyCouponsByCategory(Category category);
     List<Coupon> getCompanyCouponsByCategoryAndStatus(Category category, CouponStatus couponStatus);
-    double getMaxPriceOfCouponsOfCompany() throws CouponSystemException ;
+    Double getMaxPriceOfCouponsOfCompany() throws CouponSystemException ;
     List<Coupon> findFromCompanyCouponsUpToMaxPrice() throws CouponSystemException;
 
 
@@ -42,4 +42,6 @@ public interface CompanyService {
     Coupon getLeastExpensiveCoupon() throws CouponSystemException;
 
     List<Coupon> getCompanyCouponsByCategoryId(Long categoryId);
+
+    Company addCompany(String name, String email, String password) throws CouponSystemException;
 }

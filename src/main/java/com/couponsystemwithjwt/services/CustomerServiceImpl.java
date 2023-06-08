@@ -117,12 +117,19 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public double findMaxPriceOfCustomer() {
-        return couponRepository.findMaxPrice(customerId);
+    public Double findMaxPriceOfCustomer() throws CouponSystemException {
+        //Optional<Double> maxPrice;
+        return couponRepository.findMaxPrice(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.MAX_PRICE_NOT_FOUND));
+        /*try {
+            maxPrice = Optional.ofNullable(couponRepository.findMaxPrice(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.MAX_PRICE_NOT_FOUND)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            maxPrice = -1;
+        }*/
     }
 
     @Override
-    public List<Coupon> getCouponListLessThanMaxPrice() {
+    public List<Coupon> getCouponListLessThanMaxPrice() throws CouponSystemException {
         List<CustomerPurchase> customerPurchases = customerPurchaseRepository.findByCustomerId(customerId);
         List<Coupon> couponResultList = new ArrayList<>();
         for (CustomerPurchase customerPurchase : customerPurchases) {
@@ -152,4 +159,20 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         return customerPurchaseRepository.findByCustomerIdAndCouponId(customerId, couponId);
     }
 
+    /**
+     * This is the method for register signup: receives the customer params and checks by customer email if the customer exists in Database,
+     * if customer doesn't exist - the method adds the customer, and initializes the customerId.
+     * otherwise throws CouponSystemException.
+     *
+     */
+    @Override
+    public Customer addCustomer(String firstName, String lastName, String email, String password) throws CouponSystemException {
+        if (customerRepository.existsByEmail(email)) {
+            throw new CouponSystemException(ErrMsg.CUSTOMER_MAIL_EXISTS);
+        }
+        Customer customer = new Customer(firstName, lastName, email, password);
+        Customer customerFromDb = customerRepository.save(customer);
+        this.customerId = customerFromDb.getId();
+        return customerFromDb;
+    }
 }

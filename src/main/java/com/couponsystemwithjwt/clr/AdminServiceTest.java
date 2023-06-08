@@ -5,7 +5,7 @@ import com.couponsystemwithjwt.entity_beans.Customer;
 import com.couponsystemwithjwt.exceptions.CouponSystemException;
 import com.couponsystemwithjwt.repositories.CompanyRepository;
 import com.couponsystemwithjwt.repositories.CustomerRepository;
-import com.couponsystemwithjwt.security.LoginManager;
+import com.couponsystemwithjwt.security.AuthManager;
 import com.couponsystemwithjwt.services.AdminService;
 import com.couponsystemwithjwt.types.ClientStatus;
 import com.couponsystemwithjwt.types.ClientType;
@@ -32,20 +32,20 @@ public class AdminServiceTest implements CommandLineRunner {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private LoginManager loginManager;
+    private AuthManager authManager;
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println(ConsoleColors.YELLOW_BOLD + ArtUtils.ADMIN_SERVICE_TEST);
         TestUtils.printTest("bad logging");
         try {
-            System.out.println(loginManager.login("Jordan@gmail.com", "1111", ClientType.ADMINISTRATOR));
+            System.out.println(authManager.login("Jordan@gmail.com", "1111", ClientType.ADMINISTRATOR));
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
 
         TestUtils.printTest("good logging");
-        System.out.println(loginManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR));
+        System.out.println(authManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR));
 
         Company existingCompany= companyRepository.getById(1L);
         Company companyToAdd = Company.builder()

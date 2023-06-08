@@ -4,7 +4,7 @@ import com.couponsystemwithjwt.entity_beans.Administrator;
 import com.couponsystemwithjwt.entity_beans.Company;
 import com.couponsystemwithjwt.entity_beans.Customer;
 import com.couponsystemwithjwt.exceptions.CouponSystemException;
-import com.couponsystemwithjwt.security.request.Credentials;
+import com.couponsystemwithjwt.security.request.*;
 import com.couponsystemwithjwt.services.AdminService;
 import com.couponsystemwithjwt.services.ClientService;
 import com.couponsystemwithjwt.services.CompanyService;
@@ -21,16 +21,44 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping(path = "/auth")
-public class LoginController extends ClientController {
+public class AuthController extends ClientController {
 
     @Autowired
     private HashMap<Long, MySession> sessions;
+
+    @PostMapping(path = "/register/{type}")
+    protected ResponseEntity<?> registerUser(@RequestBody User user, @PathVariable ClientType type) throws CouponSystemException {
+        ClientService clientService = null;
+        try {
+            clientService = authManager.signUp(user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), type);
+            System.out.println("clientService: " + clientService);
+        } catch (CouponSystemException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        long id = 0;
+        String token = null;
+        try {
+            if (clientService instanceof CompanyService) {
+                id = ((CompanyService) clientService).getCompanyId();
+                Company companyFromDbById = ((CompanyService) clientService).findById(id);
+                token = tokenManager.createTokenForCompany(companyFromDbById);
+            } else if (clientService instanceof CustomerService) {
+                id = ((CustomerService) clientService).getCustomerId();
+                Customer customerFromDbById = ((CustomerService) clientService).findById(id);
+                token = tokenManager.createTokenForCustomer(customerFromDbById);
+            }
+        } catch (CouponSystemException e) {
+            throw new CouponSystemException(e.getCause());
+        }
+
+        return new ResponseEntity<>(token, HttpStatus.CREATED);
+    }
 
     @PostMapping(path = "/login/{type}")
     protected ResponseEntity<?> login(@RequestBody Credentials credentials, @PathVariable ClientType type) throws CouponSystemException {
         ClientService clientService = null;
         try {
-            clientService = loginManager.login(credentials.getEmail(), credentials.getPassword(), type);
+            clientService = authManager.login(credentials.getEmail(), credentials.getPassword(), type);
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

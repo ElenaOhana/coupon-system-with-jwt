@@ -5,7 +5,7 @@ import com.couponsystemwithjwt.entity_beans.Coupon;
 import com.couponsystemwithjwt.exceptions.CouponSystemException;
 import com.couponsystemwithjwt.repositories.CategoryRepository;
 import com.couponsystemwithjwt.repositories.CouponRepository;
-import com.couponsystemwithjwt.security.LoginManager;
+import com.couponsystemwithjwt.security.AuthManager;
 import com.couponsystemwithjwt.services.AdminServiceImpl;
 import com.couponsystemwithjwt.services.CompanyServiceImpl;
 import com.couponsystemwithjwt.types.ClientType;
@@ -33,7 +33,7 @@ public class CompanyServiceTest implements CommandLineRunner {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private LoginManager loginManager;
+    private AuthManager authManager;
 
     @Autowired
     private AdminServiceImpl adminService;
@@ -44,20 +44,20 @@ public class CompanyServiceTest implements CommandLineRunner {
         System.out.println(ConsoleColors.BLACK_BOLD_BRIGHT + ArtUtils.COMPANY_SERVICE_TEST);
         TestUtils.printTest("bad logging");
         try {
-            System.out.println(loginManager.login("cola_cola@gmail.com", "222222", ClientType.COMPANY));
+            System.out.println(authManager.login("cola_cola@gmail.com", "222222", ClientType.COMPANY));
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
         TestUtils.printTest("bad logging due to the Company is INACTIVE already");
         try {
-            System.out.println(loginManager.login("pepsi@gmail.com", "3232", ClientType.COMPANY));
+            System.out.println(authManager.login("pepsi@gmail.com", "3232", ClientType.COMPANY));
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
         TestUtils.printTest("good logging");
         CompanyServiceImpl companyServiceImpl= null;
         try {
-            companyServiceImpl = (CompanyServiceImpl) loginManager.login("cola_cola_upd@gmail.com", "222222", ClientType.COMPANY);
+            companyServiceImpl = (CompanyServiceImpl) authManager.login("cola_cola_upd@gmail.com", "222222", ClientType.COMPANY);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
@@ -75,7 +75,7 @@ public class CompanyServiceTest implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(12))
                 .amount(90)
                 .price(11.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/99/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
         try {
@@ -95,7 +95,7 @@ public class CompanyServiceTest implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(12))
                 .amount(90)
                 .price(11.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/87/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
         try {
@@ -114,7 +114,7 @@ public class CompanyServiceTest implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(12))
                 .amount(90)
                 .price(12.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/121/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
         try {
@@ -136,7 +136,7 @@ public class CompanyServiceTest implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(5))
                 .amount(10)
                 .price(24.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/142/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
         try {

@@ -66,9 +66,17 @@ public class CustomerController extends ClientController {
     public ResponseEntity<?> findMaxPriceOfCustomer(HttpServletRequest request) {
         String token = tokenManager.returnPureToken(request);
         long id = JWT.decode(token).getClaim("id").asLong();
+        System.out.println("findMaxPriceOfCustomer HAVE BEEN CALLED: ");
         try {
+            System.out.println("first line from try");
             CustomerService customerService = (CustomerService) tokenManager.getClientFromSessionByTokenIdAndSetLastActive(id);
-            return new ResponseEntity<>(customerService.findMaxPriceOfCustomer(), HttpStatus.OK);
+            ResponseEntity<Double> doubleResponseEntity = new ResponseEntity<>(customerService.findMaxPriceOfCustomer(), HttpStatus.OK);
+            System.out.println("doubleResponseEntity: " + doubleResponseEntity);
+
+            System.out.println("doubleResponseEntity.getBody(): " + doubleResponseEntity.getBody());
+            System.out.println("is null: " + (doubleResponseEntity.getBody()==null ? "true ": "false"));
+
+            return  doubleResponseEntity;
         } catch (CouponSystemException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

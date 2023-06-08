@@ -117,7 +117,7 @@ public class DummyData implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(12))
                 .amount(100)
                 .price(9.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/237/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
 
@@ -130,7 +130,7 @@ public class DummyData implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(15))
                 .amount(100)
                 .price(8.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/135//200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
 
@@ -143,7 +143,7 @@ public class DummyData implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(12))
                 .amount(100)
                 .price(9.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/123/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
 
@@ -156,7 +156,7 @@ public class DummyData implements CommandLineRunner {
                 .endDate(LocalDateTime.now().plusDays(15))
                 .amount(100)
                 .price(9.9)
-                .image("https://picsum.photos/200")
+                .image("https://picsum.photos/id/187/200")
                 .couponStatus(CouponStatus.ABLE)
                 .build();
 
